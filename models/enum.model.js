@@ -13,8 +13,14 @@ const EnumTypeOfToken = {
   VERIFY_EMAIL: 'verifyEmail',
   REFRESH: 'refresh',
 };
+const EnumFriendRequestStatus = {
+  PENDING: 'pending',
+  ACCEPTED: 'accepted',
+  REJECTED: 'rejected',
+};
 module.exports = {
   EnumCodeTypeOfCode,
   EnumRoleOfUser,
   EnumTypeOfToken,
+  EnumFriendRequestStatus,
 };

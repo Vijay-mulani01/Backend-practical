@@ -6,18 +6,42 @@ import Joi from 'joi';
 
 Joi.objectId = require('joi-objectid')(Joi);
 
+const objectId = (value, helpers) => {
+  if (!value.match(/^[0-9a-fA-F]{24}$/)) {
+    return helpers.message('"{{#label}}" must be a valid mongo id');
+  }
+  return value;
+};
+
 export const sendFriendRequest = {
-  // send friend request validation logic here
+  body: Joi.object()
+    .keys({
+      receiverId: Joi.string().custom(objectId),
+      receiver: Joi.string().custom(objectId),
+    })
+    .or('receiverId', 'receiver'),
 };
 
 export const fetchAllFriends = {
-  // get user validation logic here
+  query: Joi.object().keys({
+    page: Joi.number().integer().min(1),
+    limit: Joi.number().integer().min(1),
+  }),
 };
 
 export const paginatedUser = {
-  // paginate user validation logic here
+  query: Joi.object().keys({
+    page: Joi.number().integer().min(1),
+    limit: Joi.number().integer().min(1),
+    status: Joi.string().valid('pending', 'accepted', 'rejected'),
+  }),
 };
 
 export const friendRequest = {
-  // friend request validation logic here
+  params: Joi.object().keys({
+    id: Joi.string().custom(objectId).required(),
+  }),
+  body: Joi.object().keys({
+    status: Joi.string().valid('accepted', 'rejected', 'accept', 'reject').required(),
+  }),
 };
